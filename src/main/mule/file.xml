@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="3934c3cc-4635-423e-8d84-36b930533955" >
+		<db:my-sql-connection host="b4qi10m6jtplv7e7fgfv-mysql.services.clever-cloud.com" port="3306" user="uji3yqdlyzbqadtu" password="xidtsmUmJsX7OUOnf4w4" database="b4qi10m6jtplv7e7fgfv" />
+	</db:config>
+	<flow name="fileFlow" doc:id="76899c44-02f5-4029-be56-ce6e17ff71ad" >
+		<scheduler doc:name="Scheduler" doc:id="c66dd9d4-8b00-4dde-82f0-664d426e5998" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="10" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<file:read doc:name="Read" doc:id="9947f6da-32dd-4438-a8a5-70e56d286049" path="C:\Users\dell\OneDrive\Desktop\India.csv"/>
+		<logger level="INFO" doc:name="Logger" doc:id="0701d77e-42ed-4b49-8969-1d233eb90fb9" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="817d2511-be09-4dd4-ac3c-2b605b4bd050">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	SerialNumber: payload01.Sno,
+	StateName: payload01.State,
+	CapitalCity: payload01.capitalcity,
+	CM: payload01.chiefministers,
+	Governer: payload01.governer,
+	RajayasabaSeats: payload01.Rajyasabha,
+	Loksabaseats: payload01.Loksabha,
+	AreaWiseRank: payload01.Arearank,
+	PopulationWiseRank: payload01.PopulationWiserank
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="617ed292-3640-4a65-9cf0-700146a8a3c9" message="#[payload]"/>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="1c05e819-b24e-49bf-a087-bbea033e9224" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO `IndiaDetails`(`SerialNumber`, `StateName`, `CapitalCity`, `CM`, `Governer`, `RajayasabaSeats`, `Loksabaseats`, `AreaWiseRank`, `PopulationWiseRank`) VALUES (:SerialNumber, :StateName, :CapitalCity, :CM, :Governer, :RajayasabaSeats, :Loksabaseats, :AreaWiseRank, :PopulationWiseRank)]]></db:sql>
+		</db:bulk-insert>
+	</flow>
+</mule>

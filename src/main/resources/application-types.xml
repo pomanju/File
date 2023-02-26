@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="InputMetaData" format="csv">
+      <types:shape format="weave" example="examples/India-1.csv"><![CDATA[%dw 2.0
+
+type InputMetaData = Array<{|  Sno: String,   State: String,   capitalcity: String,   chiefministers: String,   governer: String,   Rajyasabha: String,   Loksabha: String,   Arearank: String,   PopulationWiserank: String|}> {"isQuotedString": "false",
+"header": "true",
+"headerLineNumber": "0"}
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+    <types:type name="OutputMetaData" format="json">
+      <types:shape format="weave" example="examples/exampleformulefileproject-2.json"><![CDATA[%dw 2.0
+
+type OutputMetaData = Array<{|  SerialNumber: String,   StateName: String,   CapitalCity: String,   CM: String,   Governer: String,   RajayasabaSeats: String,   Loksabaseats: String,   AreaWiseRank: String,   PopulationWiseRank: String|}> {"example": "[{\\\"SerialNumber\\\":\\\"1\\\",\\\"StateName\\\":\\\"Andhrapraddesh\\\",\\\"CapitalCity\\\":\\\"Andhrapraddesh\\\",\\\"CM\\\":\\\"Andhrapraddesh\\\",\\\"Governer\\\":\\\"Andhrapraddesh\\\",\\\"RajayasabaSeats\\\":\\\"1\\\",\\\"Loksabaseats\\\":\\\"2\\\",\\\"AreaWiseRank\\\":\\\"3\\\",\\\"PopulationWiseRank\\\":\\\"4\\\"},{\\\"SerialNumber\\\":\\\"2\\\",\\\"StateName\\\":\\\"Karnataka\\\",\\\"CapitalCity\\\":\\\"Andhrapraddesh\\\",\\\"CM\\\":\\\"Andhrapraddesh\\\",\\\"Governer\\\":\\\"Andhrapraddesh\\\",\\\"RajayasabaSeats\\\":\\\"1\\\",\\\"Loksabaseats\\\":\\\"2\\\",\\\"AreaWiseRank\\\":\\\"3\\\",\\\"PopulationWiseRank\\\":\\\"4\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#817d2511-be09-4dd4-ac3c-2b605b4bd050">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="InputMetaData"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="OutputMetaData"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

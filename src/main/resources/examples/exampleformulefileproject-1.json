@@ -1,0 +1,23 @@
+[{
+		"SerialNumber": 1,
+		"StateName": "Andhrapraddesh",
+		"CapitalCity": "Andhrapraddesh",
+		"CM": "Andhrapraddesh",
+		"Governer": "Andhrapraddesh",
+		"RajayasabaSeats": 1,
+		"Loksabaseats": 2,
+		"AreaWiseRank": 3,
+		"PopulationWiseRank": 4
+	},
+	{
+		"SerialNumber": 2,
+		"StateName": "Karnataka",
+		"CapitalCity": "Andhrapraddesh",
+		"CM": "Andhrapraddesh",
+		"Governer": "Andhrapraddesh",
+		"RajayasabaSeats": 1,
+		"Loksabaseats": 2,
+		"AreaWiseRank": 3,
+		"PopulationWiseRank": 4
+	}
+]
